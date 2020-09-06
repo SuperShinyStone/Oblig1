@@ -1,61 +1,85 @@
 package no.oslomet.cs.algdat.Oblig1;
 
-
 import java.util.Arrays;
+import java.util.*;
 
 public class Main {
+
     static void delsortering(int[] a) {
 
-        /*
-        for(int i = 0; i < a.length-1; i++){
-            for(int j = 0; j < a.length-1; j++) {
-                //PARTALL KASTES BAKOVER
-                if (a[j] > a[j + 1] || (a[j] % 2 == 0 && a[j+1] % 2 == 1)) {
-                    int temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
+        if(a.length > 1) {
+
+            int v = 0;
+            int h = a.length - 1;
+
+            long tid = System.currentTimeMillis();
+            for (int i = 0; i < a.length; i++) {
+                while (a[v] % 2 != 0 && v < a.length-1) {
+                    v++;
+                }
+                while (a[h] % 2 == 0 && h > 0) {
+                    h--;
+                }
+                if (v < h) {
+                    int temp = a[v];
+                    a[v] = a[h];
+                    a[h] = temp;
                 }
             }
-        }
 
-         */
-
-        /* KAST FRAMOVER START BAK??
-        for(int i = a.length-1; i > 0; i--){
-            for(int j = a.length-1; j > 0; j--) {
-                //PARTALL KASTES BAKOVER
-                if (a[j] > a[j - 1] || (a[j] % 2 == 1 && a[j+1] % 2 == 1)) {
-                    int temp = a[j];
-                    a[j] = a[j - 1];
-                    a[j - 1] = temp;
+            int skilleIndex = 0;
+            for (int i = 0; i < a.length - 1; i++) {
+                if (a[i] % 2 == 0) {
+                    skilleIndex = i;
+                    break;
                 }
             }
-        }
-         */
 
-    }
+            v = skilleIndex;
+            h = a.length - 1;
+            //partall sortering
+            for (int i = v; i <= a.length -1; i++) {
 
-    public static void rotasjon(char[] a) {
+                for (int j = v; j <= h; j++) {
+                    if (a[j] > a[h]) {
+                        int temp = a[j];
+                        a[j] = a[h];
+                        a[h] = temp;
+                    }
+                }
+                h--;
+            }
 
-        if(a.length == 0){
+            v = 0;
+            h = skilleIndex - 1;
+            //odetall sortering
+            for (int i = v; i <= h; i++) {
+
+                for (int j = v; j <= h; j++) {
+                    if (a[j] > a[h]) {
+                        int temp = a[j];
+                        a[j] = a[h];
+                        a[h] = temp;
+                    }
+                }
+                h--;
+            }
+            tid = System.currentTimeMillis() - tid;
+            if(tid > 100){
+                System.out.println("For lang tid");
+            }
         } else {
-            char temp = a[a.length-1]; //Siste bokstaven
-            for (int i = a.length-1; i > 0; i--) {
-                a[i] = a[i - 1];
-            }
-            a[0] = temp;
+            return;
         }
     }
-
 
     public static void main(String[] args) {
-        int arr[] = { 1, 2, 3, 4, 5, 6};
-        delsortering(arr);
-        System.out.println(Arrays.toString(arr));
+        int[] a = {-4, -1, 3, 0, 2, -3, -2, 4, 1};
+        int[] b = {-3, -1, 1, 3, -4, -2, 0, 2, 4};
 
-        char[] d = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
-        rotasjon(d);
-        System.out.println(Arrays.toString(d));
 
+        delsortering(a);
+        //sortAsc(a);
+        System.out.println(Arrays.toString(a));
     }
 }

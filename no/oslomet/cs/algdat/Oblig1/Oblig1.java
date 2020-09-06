@@ -78,16 +78,18 @@ public class Oblig1 {
     public static int antallUlikeUsortert(int[] a) {
         int teller = 1;
 
-        for (int i = 1; i < a.length; i++)
-        {
+        for (int i = 1; i < a.length; i++){
             int j;
-            for (j = 0; j < i; j++)
+            for (j = 0; j < i; j++) {
                 if (a[i] == a[j])
                     break;
+            }
 
-            if (i == j)
+            if (i == j) {
                 teller++;
+            }
         }
+
         if(a.length==0){
             teller=0;
         }
@@ -96,25 +98,64 @@ public class Oblig1 {
 
     ///// Oppgave 4 //////////////////////////////////////
     public static void delsortering(int[] a) {
+        if(a.length > 1) {
 
-        for(int i = 0; i < a.length-1; i++){
-            for(int j = 0; j < a.length-1; j++) {
-                if (a[j] > a[j + 1] && a[j] % 2 == 0) {
-                    int temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
+            int v = 0;
+            int h = a.length - 1;
+
+            for (int i = 0; i < a.length; i++) {
+                while (a[v] % 2 != 0 && v < a.length-1) {
+                    v++;
+                }
+                while (a[h] % 2 == 0 && h > 0) {
+                    h--;
+                }
+                if (v < h) {
+                    int temp = a[v];
+                    a[v] = a[h];
+                    a[h] = temp;
                 }
             }
-        }
 
-        for(int i = 0; i < a.length-1; i++){
-            for(int j = 0; j < a.length-1; j++) {
-                if (a[j] > a[j + 1] && a[j] % 2 == 1 && a[j+1] % 2 == 1) {
-                    int temp = a[j];
-                    a[j] = a[j + 1];
-                    a[j + 1] = temp;
+            int skilleIndex = 0;
+            for (int i = 0; i < a.length - 1; i++) {
+                if (a[i] % 2 == 0) {
+                    skilleIndex = i;
+                    break;
                 }
             }
+
+            v = skilleIndex;
+            h = a.length - 1;
+            //partall sortering
+            for (int i = v; i <= a.length -1; i++) {
+
+                for (int j = v; j <= h; j++) {
+                    if (a[j] > a[h]) {
+                        int temp = a[j];
+                        a[j] = a[h];
+                        a[h] = temp;
+                    }
+                }
+                h--;
+            }
+
+            v = 0;
+            h = skilleIndex - 1;
+            //odetall sortering
+            for (int i = v; i <= h; i++) {
+
+                for (int j = v; j <= h; j++) {
+                    if (a[j] > a[h]) {
+                        int temp = a[j];
+                        a[j] = a[h];
+                        a[h] = temp;
+                    }
+                }
+                h--;
+            }
+        } else {
+            return;
         }
     }
 

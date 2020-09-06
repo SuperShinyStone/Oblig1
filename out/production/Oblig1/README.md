@@ -2,8 +2,8 @@
 
 Denne oppgaven er en innlevering i Algoritmer og Datastrukturer. 
 Oppgaven er levert av følgende studenter:
-* Navn Navnesen, S123456, s123456@oslomet.no
-* ...
+* Henry Manh Tu Tran, S330299, s330299@oslomet.no
+* Yasin Adnan-Faik Stamatis, S344204, s344204@oslomet.no
 
 # Arbeidsfordeling
 
