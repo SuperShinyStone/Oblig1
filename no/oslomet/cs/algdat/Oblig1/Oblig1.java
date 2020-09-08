@@ -3,6 +3,7 @@ package no.oslomet.cs.algdat.Oblig1;
 ////// Løsningsforslag Oblig 1 ////////////////////////
 
 import java.lang.UnsupportedOperationException;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class Oblig1 {
@@ -97,66 +98,58 @@ public class Oblig1 {
     }
 
     ///// Oppgave 4 //////////////////////////////////////
+    private static void bytt(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j]= temp;
+    }
+
+    private static int partition(int[] a, int begin, int end){
+        int pivot = a[end];
+        int j = (begin-1);
+
+        for(int i = begin; i < end; i++){
+            if(a[i] <= pivot){
+                j++;
+                bytt(a, i, j);
+            }
+        }
+        bytt(a, j+1, end);
+        return j+1;
+    }
+
+    private static void quickSort(int[] values, int left, int right){
+        if(left < right){
+            int pivot_index = partition(values, left, right);
+            quickSort(values, left, pivot_index-1);
+            quickSort(values, pivot_index+1, right);
+        }
+    }
     public static void delsortering(int[] a) {
+
         if(a.length > 1) {
 
-            int v = 0;
-            int h = a.length - 1;
+            int oddetall = 0;
 
-            for (int i = 0; i < a.length; i++) {
-                while (a[v] % 2 != 0 && v < a.length-1) {
-                    v++;
-                }
-                while (a[h] % 2 == 0 && h > 0) {
-                    h--;
-                }
-                if (v < h) {
-                    int temp = a[v];
-                    a[v] = a[h];
-                    a[h] = temp;
+            for(int i = 0; i < a.length; i++){
+                if(a[i] % 2 != 0){
+                    int temp = a[oddetall];
+                    a[oddetall] = a[i];
+                    a[i] = temp;
+                    oddetall++;
                 }
             }
 
-            int skilleIndex = 0;
-            for (int i = 0; i < a.length - 1; i++) {
-                if (a[i] % 2 == 0) {
-                    skilleIndex = i;
-                    break;
-                }
-            }
+            // Sort odd number in ascending order
+            quickSort(a, 0, oddetall-1);
 
-            v = skilleIndex;
-            h = a.length - 1;
-            //partall sortering
-            for (int i = v; i <= a.length -1; i++) {
+            // Sort even number in ascending order
+            quickSort(a, oddetall, a.length-1);
 
-                for (int j = v; j <= h; j++) {
-                    if (a[j] > a[h]) {
-                        int temp = a[j];
-                        a[j] = a[h];
-                        a[h] = temp;
-                    }
-                }
-                h--;
-            }
-
-            v = 0;
-            h = skilleIndex - 1;
-            //odetall sortering
-            for (int i = v; i <= h; i++) {
-
-                for (int j = v; j <= h; j++) {
-                    if (a[j] > a[h]) {
-                        int temp = a[j];
-                        a[j] = a[h];
-                        a[h] = temp;
-                    }
-                }
-                h--;
-            }
         } else {
             return;
         }
+
     }
 
     ///// Oppgave 5 //////////////////////////////////////
@@ -173,46 +166,122 @@ public class Oblig1 {
     }
 
     ///// Oppgave 6 //////////////////////////////////////
-    public static void rotasjon(char[] a, int k) {
-        if(k > 0){
-            for(int j = 0; j <= k; j++) {
-                if (a.length == 0) {
-                } else {
-                    char temp = a[a.length - 1]; //Siste bokstaven
-                    for (int i = a.length - 1; i > 0; i--) {
-                        a[i] = a[i - 1];
-                    }
-                    a[0] = temp;
+    public static int gcd(int a, int b)  // Euklids algoritme
+    {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+    public static void rotasjon(char[] a, int d)    // 3. versjon
+    {
+        int n = a.length;  if (n < 2) return;         // ingen rotasjon
+        if ((d %= n) < 0) d += n;                     // motsatt vei?
+
+        int s = gcd(n, d);                            // største felles divisor
+
+        for (int k = 0; k < s; k++)                   // antall sykler
+        {
+            char verdi = a[k];                          // hjelpevariabel
+
+            for (int i = k - d, j = k; i != k; i -= d)  // løkke
+            {
+                if (i < 0) i += n;                        // sjekker fortegnet til i
+                a[j] = a[i]; j = i;                       // kopierer og oppdaterer j
+            }
+
+            a[k + d] = verdi;                           // legger tilbake verdien
+        }
+    }
+    public static void rotasjon3(char[] a, int k) {
+        if(a.length < 2 || k == 0){
+            return;
+        }
+        int n = k;
+
+        if(n > 0) {
+            for (int i = 0; i < n; i++) {
+                char last;
+                last = a[a.length - 1];
+
+                for (int j = a.length - 1; j > 0; j--) {
+                    a[j] = a[j - 1];
                 }
+                a[0] = last;
+            }
+        } else if(n < 0){
+            for (int i = 0; i < -n; i++) {
+                char first;
+                first = a[0];
+
+                for (int j = 0; j < a.length-1; j++) {
+                    a[j] = a[j + 1];
+                }
+                a[a.length-1] = first;
             }
         } else {
-            for(int j = 0; j <= k; j++) {
-                if (a.length == 0) {
-                } else {
-                    char temp = a[0]; //Siste bokstaven
-                    for (int i = 0; i < a.length - 1; i++) {
-                        a[i] = a[i + 1];
-                    }
-                    a[a.length-1] = temp;
-                }
-            }
+            //nothing
         }
     }
 
     ///// Oppgave 7 //////////////////////////////////////
     /// 7a)
     public static String flett(String s, String t) {
-        throw new UnsupportedOperationException();
+        char[] sArray = s.toCharArray();
+        char[] tArray = t.toCharArray();
+
+        char[] ut = new char[sArray.length + tArray.length];  // en tabell av rett størrelse
+        int i = 0, j = 0, k = 0;                 // løkkevariabler
+
+        while (i < sArray.length && j < tArray.length)
+        {
+            ut[k++] = sArray[i++];      // først en verdi fra a
+            ut[k++] = tArray[j++];      // så en verdi fra b
+        }
+        // vi må ta med resten
+        while (i < sArray.length) ut[k++] = sArray[i++];
+        while (j < tArray.length) ut[k++] = tArray[j++];
+
+        return new String(ut);
     }
 
     /// 7b)
     public static String flett(String... s) {
-        throw new UnsupportedOperationException();
+        int maxLength = 0;
+        for (String i : s) {
+            if (i.length() > maxLength) {
+                maxLength = i.length();
+            }
+        }
+
+        String utString = "";
+
+        for (int bokstav = 0; bokstav < maxLength; bokstav++) {
+            for (String ord : s) {
+                if (ord.length() > bokstav) {
+                    utString += ord.charAt(bokstav);
+                }
+            }
+        }
+        return utString;
     }
 
     ///// Oppgave 8 //////////////////////////////////////
     public static int[] indekssortering(int[] a) {
-        throw new UnsupportedOperationException();
+        int teller = 0;
+        int[] index = new int[a.length];
+
+        int[] aSorted = a.clone();
+
+        quickSort(aSorted, 0, a.length-1);
+
+        for(int i = 0; i < a.length-1; i++){
+            for(int j = 0; j < aSorted.length-1; j++){
+                if(aSorted[j] == a[i]){
+                    index[teller] = j;
+                    teller++;
+                }
+            }
+        }
+
+        return index;
     }
 
     ///// Oppgave 9 //////////////////////////////////////

@@ -688,6 +688,7 @@ public class Oblig1Test {
         a = new int[]{5, 2, 8, 3, 5, 10, 7, 5, 2, 10, 6};
         int[] c = a.clone();
         b = new int[]{2, 2, 3, 5, 5, 5, 6, 7, 8, 10, 10};
+        //[1, 8, 3, 0, 4, 7, 10, 6, 2, 5, 9]
         indeks = Oblig1.indekssortering(a);
         int[] d = new int[a.length];
         for (int i = 0; i < d.length; i++) d[i] = a[indeks[i]];
